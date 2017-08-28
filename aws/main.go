@@ -116,6 +116,9 @@ func Signature(signatureString string, signatureKey []byte) string {
 }
 
 func Request(requestUrl, requestParamString, signature string) ([]byte, error) {
+	defer func() {
+		recover()
+	}()
 	resp, err := http.Get(requestUrl + "/?" + requestParamString + "&X-Amz-Signature=" + signature)
 	if err != nil {
 		return nil, err

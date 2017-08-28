@@ -69,6 +69,9 @@ func Host(service, region string) string {
 }
 
 func Request(requestUrl, requestParamString, signature string) ([]byte, error) {
+	defer func() {
+		recover()
+	}()
 	resp, err := http.Post("https://"+requestUrl, "application/x-www-form-urlencoded", strings.NewReader(requestParamString+"&Signature="+signature))
 	defer resp.Body.Close()
 	if err != nil {

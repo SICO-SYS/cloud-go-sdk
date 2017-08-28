@@ -82,6 +82,9 @@ func URL(scheme, service, region string) string {
 }
 
 func Request(requestUrl, requestParamString, signature string) ([]byte, error) {
+	defer func() {
+		recover()
+	}()
 	resp, err := http.Get(requestUrl + "/?" + requestParamString + "&Signature=" + signature)
 	defer resp.Body.Close()
 	if err != nil {
