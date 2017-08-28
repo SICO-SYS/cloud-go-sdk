@@ -6,7 +6,7 @@ Email:    sinerwr@gmail.com
 
 */
 
-package aliyun
+package aliyunSDK
 
 import (
 	"io/ioutil"

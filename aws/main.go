@@ -6,7 +6,7 @@ Email:    sinerwr@gmail.com
 
 */
 
-package aws
+package awsSDK
 
 import (
 	"io/ioutil"

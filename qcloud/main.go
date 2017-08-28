@@ -6,7 +6,7 @@ Email:    sinerwr@gmail.com
 
 */
 
-package qcloud
+package qcloudSDK
 
 import (
 	"io/ioutil"
