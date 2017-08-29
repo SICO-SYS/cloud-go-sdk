@@ -58,12 +58,12 @@ type CVMDataDisk struct {
 type CVMInternetAccessible struct {
 	InternetChargeType      string
 	InternetMaxBandwidthOut int64
-	PublicIpAssigned        string
+	PublicIpAssigned        bool
 }
 
 type CVMVirtualPrivateCloud struct {
 	VpcId              string
 	SubnetId           string
-	AsVpcGateway       string
+	AsVpcGateway       bool
 	PrivateIpAddresses []string
 }
