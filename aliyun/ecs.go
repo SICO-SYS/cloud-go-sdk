@@ -8,7 +8,7 @@ Email:    sinerwr@gmail.com
 
 package aliyunSDK
 
-type Aliyun struct {
+type ECS struct {
 	PageNumber int64
 	TotalCount int64
 	PageSize   int64
