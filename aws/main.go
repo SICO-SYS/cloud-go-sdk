@@ -19,10 +19,14 @@ import (
 )
 
 var (
-	amzDate      string = public.CurrentYYYMMDD()
-	amzDatetime  string = public.CurrentYYYMMDDTHHMMSSZ()
 	amzAlgorithm string = "AWS4-HMAC-SHA256"
 )
+
+func Dates() (amzDate, amzDatetime string) {
+	amzDate = public.CurrentYYYMMDD()
+	amzDatetime = public.CurrentYYYMMDDTHHMMSSZ()
+	return amzDate, amzDatetime
+}
 
 func URLEncode(signstr string) string {
 	result := url.QueryEscape(signstr)
@@ -48,18 +52,18 @@ func Host(service, region string) string {
 	}
 }
 
-func CredentialScope(service, region string) string {
+func CredentialScope(amzDate, service, region string) string {
 	return strings.Join([]string{amzDate, region, service, "aws4_request"}, "/")
 }
 
-func CanonicalQueryString(service, action, region, secretId string, extraParams map[string]string) string {
+func CanonicalQueryString(service, action, credentialScope, secretId, amzDatetime string, extraParams map[string]string) string {
 	params := make(map[string]string)
 	var sortparams = []string{}
 	params["Action"] = action
 	sortparams = append(sortparams, "Action")
 	params["X-Amz-Algorithm"] = amzAlgorithm
 	sortparams = append(sortparams, "X-Amz-Algorithm")
-	params["X-Amz-Credential"] = secretId + "/" + CredentialScope(service, region)
+	params["X-Amz-Credential"] = secretId + "/" + credentialScope
 	sortparams = append(sortparams, "X-Amz-Credential")
 	params["X-Amz-Date"] = amzDatetime
 	sortparams = append(sortparams, "X-Amz-Date")
@@ -98,11 +102,11 @@ func CanonicalRequest(queryString, canonicalhost string) string {
 	return strings.Join([]string{"GET", "/", queryString, canonicalhost, "host", public.EncryptWithSha256("")}, "\n")
 }
 
-func SignatureString(credentialScope, canonicalRequest string) string {
+func SignatureString(credentialScope, canonicalRequest, amzDatetime string) string {
 	return strings.Join([]string{amzAlgorithm, amzDatetime, credentialScope, public.EncryptWithSha256(canonicalRequest)}, "\n")
 }
 
-func SignatureKey(secretKey, region, service string) []byte {
+func SignatureKey(secretKey, region, service, amzDate string) []byte {
 	key := public.EncryptBytesWithHmacSha256([]byte("AWS4"+secretKey), amzDate)
 	key = public.EncryptBytesWithHmacSha256(key, region)
 	key = public.EncryptBytesWithHmacSha256(key, service)
