@@ -103,7 +103,6 @@ func Marshal(to, from, timestamp, msgtype, content string) []byte {
 	case "text":
 		v.Content = CDATA(content)
 	default:
-		v := &TextResponse{}
 		v.MsgType = CDATA("text")
 		v.Content = CDATA("Master is foolish, MsgType execute error")
 	}
