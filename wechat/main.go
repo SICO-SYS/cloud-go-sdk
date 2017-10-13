@@ -102,12 +102,10 @@ func Marshal(to, from, timestamp, msgtype, content string) []byte {
 	switch msgtype {
 	case "text":
 		v.Content = CDATA(content)
-	case "":
-		v.MsgType = CDATA("text")
-		v.Content = "Master is foolish, forget execute MsgType"
 	default:
-		v := &TextRequest{}
-		v.Content = "Not allow message"
+		v := &TextResponse{}
+		v.MsgType = CDATA("text")
+		v.Content = CDATA("Master is foolish, MsgType execute error")
 	}
 	data, _ := xml.Marshal(v)
 	return data
