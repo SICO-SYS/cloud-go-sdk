@@ -65,11 +65,11 @@ type CDATAText struct {
 	Text string `xml:",innerxml"`
 }
 
-func GetValidation(token string, req *http.Request) (string, string, string, string) {
+func GetValidation(req *http.Request) (string, string, string) {
 	nonce := req.URL.Query().Get("nonce")
 	timestamp := req.URL.Query().Get("timestamp")
 	signature := req.URL.Query().Get("signature")
-	return token, nonce, timestamp, signature
+	return nonce, timestamp, signature
 }
 
 func ValidateServer(token, nonce, timestamp, signature string) bool {
